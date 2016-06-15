@@ -7,35 +7,104 @@
     </style>
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
-    //$(document).ready(function() {
-    //$.ajax({
-    //type:'GET', 
-    //dataType:'jsonp',
-    //url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
-    //success : function(data) {
-    //var markers = data.result;
+    $(document).ready(function() {
+    $.ajax({
+        url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
+        success : function(data) {
+            data = $.parseJSON(data);
+            var markers = data.result;
+            
+            // -- 設定地圖樣式
+            var styles = [
+                {
+                    stylers: [
+                        { saturation: -50 }
+                    ]
+                },
+                {
+                    featureType: "road",
+                    elementType: "geometry",
+                    stylers: [
+                        { lightness: 30 },
+                        { visibility: "simplified" }
+                    ]
+                },
+                {
+                    featureType: "road",
+                    elementType: "labels",
+                    stylers: [
+                        { visibility: "off" }
+                    ]
+                }
+            ];  // -- 設定地圖樣式
 
-    var map;
-    function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center:  new google.maps.LatLng(22.734177,120.284121)
-    });
+            var styledMap = new google.maps.StyledMapType(styles, {name: "My Map!"});
   
-           //for ( var i = 0; i < markers.length; i++) {
-               
-                //var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
-                
-     var image = 'camera.png';
-     var markers = new google.maps.Marker({
-     position: {lat: 22.734177, lng: 120.284121},
-     map: map,
-    
-     icon: image
-  });
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center : new google.maps.LatLng(23.849647, 120.922398), // 指定地圖的中心點，這邊我設在台灣
+                zoom : 9,
+                mapTypeControlOptions: {
+                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+                }
+            });
+
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
+
+            var infoWindow = new google.maps.InfoWindow(); // 設定氣泡框 (message bubble)，顯示地標相關的資訊
+
+            var markerClusterer = [];   // 設定標記叢集 (marker clusterer)
+
+            for ( var i = 0; i < markers.length; i++) {
+                var name = markers[i].name;
+                var content = markers[i].content;
+                var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                var html = "<h3>" + name + "</h3><p>" + content +"</p>"; // 設定點選地圖標記後的對話氣泡框的內容 (可以使用 HTML tag)
+                // 把地標加到地圖上
+                var marker = new google.maps.Marker({
+                    map : map,
+                    position : point,
+                    icon : 'camera.png'
+                });
+
+                bindInfoWindow(marker, map, infoWindow, html); // 把對話框內容綁到地圖標記上頭
+                // 先把所有要做成標記叢集 (marker clusterer) 的標記通通塞進一個集合 (collection)
+                markerClusterer.push(marker); 
+            }
+
+            // 設定標記叢集的外觀
+            var markerClusterDraw = new MarkerClusterer(map, markerClusterer, {
+                gridSize: 80,  // 多少範圍內的標記要撿在一組 (是用 grid 的概念，落在框外的有時會自成單一地圖標記 (marker)，不會轉成 marker clusterer)
+                styles: [{
+                    url: 'camera.png', // 可以自訂圖案
+                    height: 45,
+                    width: 50,
+                    anchor: [1, 12],    // 文字出現在標記上的哪個位置 (position on marker)
+                    textColor: '#ffffff',
+                    textSize: 13
+                },
+                {
+                    url: 'camera.png',
+                    height: 45,
+                    width: 50,
+                    anchor: [1, 8],
+                    textColor: '#ffffcc',
+                    textSize: 8
+                }],
+            });
+        }
+    });
+});
+
+// 設定地圖標記 (marker) 點開後的對話氣泡框 (message bubble)
+function bindInfoWindow(marker, map, infoWindow, html) {
+    // 除了 click 事件，也可以用 mouseover 等事件觸發氣泡框顯示
+    google.maps.event.addListener(marker, 'click', function() { 
+        infoWindow.setContent(html);
+        infoWindow.open(map, marker);
+    });
 }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
+   
     </script>
   </head>
   <body>
