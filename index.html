@@ -7,6 +7,14 @@
     </style>
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
+    
+    $(document).ready(function() {
+    $.ajax({
+    url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
+    success : function(data) {
+    data = $.parseJSON(data);
+    var beachMarker = data.result;
+
         var map;
         function initMap() {
        var map = new google.maps.Map(document.getElementById('map'), {
@@ -15,6 +23,13 @@
      });
 
      var image = 'camera.png';
+
+       for ( var i = 0; i < markers.length; i++) {
+                var name = markers[i].name;
+                var content = markers[i].content;
+                var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                var html = "<h3>" + name + "</h3><p>" + content +"</p>"; // 設定點選地圖標記後的對話氣泡框的內容 (可以使用 HTML tag)
+                // 把地標加到地圖上
      var beachMarker = new google.maps.Marker({
      position: {lat: 22.734177, lng: 120.284121},
      map: map,
