@@ -20,9 +20,12 @@
           }
           var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+          var image = 'http://i.imgur.com/cw49VDU.png';
           var marker = new google.maps.Marker({
           position: myLatlng,
           title:"Hello World!"
+          map: map,
+          icon: image
           });
           marker.setMap(map);
         }
