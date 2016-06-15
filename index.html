@@ -13,6 +13,17 @@
             center: {lat: 22.734437, lng: 120.283739},
             zoom: 8
           });
+          var myLatlng = new google.maps.LatLng(23.734437,121.283739);
+          var mapOptions = {
+          zoom: 4,
+          center: myLatlng
+          }
+          var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+          var marker = new google.maps.Marker({
+          position: myLatlng,
+          title:"Hello World!"
+          });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
