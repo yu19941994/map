@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
     </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap">
-    </script>
+    <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
-      var map;
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(22.734177, 120.284121),
-          zoom: 7,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById("map_canvas"),
-            mapOptions);
-      }
+    //$(document).ready(function() {
+    //$.ajax({
+    //type:'GET', 
+    //dataType:'jsonp',
+    //url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
+    //success : function(data) {
+    //var markers = data.result;
+
+    var map;
+    function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center:  new google.maps.LatLng(22.734177,120.284121)
+    });
+  
+           //for ( var i = 0; i < markers.length; i++) {
+               
+                //var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                
+     var image = 'camera.png';
+     var markers = new google.maps.Marker({
+     position: {lat: 22.734177, lng: 120.284121},
+     map: map,
+    
+     icon: image
+  });
+}
     </script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
+    </script>
   </head>
-  <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:100%"></div>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $.getJSON("http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O", function(json1) {
-          $.each(json1, function(key, data) {
-            var latLng = new google.maps.LatLng(data.經度Lng, data.緯度Lat); 
-            // Creating a marker and putting it on the map
-            var marker = new google.maps.Marker({
-                position: latLng,
-                title: data.title
-            });
-            marker.setMap(map);
-          });
-        });
-      });
-    </script>
+  <body>
+    <div id="map"></div>
   </body>
 </html>
