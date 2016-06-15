@@ -8,7 +8,10 @@
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-    $.ajax({url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
+    $.ajax({
+    type:'GET', 
+    dataType:'jsonp',
+    url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
     success : function(data) {
     data = $.parseJSON(data);
     var markers = data.result;
@@ -17,22 +20,11 @@
     function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
-    center: {lat: 22.734177, lng: 120.284121}
+    center: new google.maps.LatLng(22.734177,120.284121)
     });
 
      var image = 'camera.png';
-     mapTypeControlOptions: {
-                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
-                }
-            });
-
-            map.mapTypes.set('map_style', styledMap);
-            map.setMapTypeId('map_style');
-
-            var infoWindow = new google.maps.InfoWindow(); // 設定氣泡框 (message bubble)，顯示地標相關的資訊
-
-            var markerClusterer = [];   // 設定標記叢集 (marker clusterer)
-
+  
             for ( var i = 0; i < markers.length; i++) {
                 var name = markers[i].name;
                 var content = markers[i].content;
