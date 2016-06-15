@@ -36,7 +36,7 @@
             for ( var i = 0; i < markers.length; i++) {
                 var name = markers[i].name;
                 var content = markers[i].content;
-                var point = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
                 var html = "<h3>" + name + "</h3><p>" + content +"</p>"; // 設定點選地圖標記後的對話氣泡框的內容 (可以使用 HTML tag)
                 // 把地標加到地圖上
      var markers = new google.maps.Marker({
