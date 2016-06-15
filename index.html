@@ -7,13 +7,13 @@
     </style>
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-    $.ajax({
-    type:'GET', 
-    dataType:'jsonp',
-    url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
-    success : function(data) {
-    var markers = data.result;
+    //$(document).ready(function() {
+    //$.ajax({
+    //type:'GET', 
+    //dataType:'jsonp',
+    //url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
+    //success : function(data) {
+    //var markers = data.result;
 
     var map;
     function initMap() {
@@ -22,15 +22,15 @@
     center:  new google.maps.LatLng(22.734177,120.284121)
     });
   
-           for ( var i = 0; i < markers.length; i++) {
+           //for ( var i = 0; i < markers.length; i++) {
                
-                var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                //var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
                 
      var image = 'camera.png';
      var markers = new google.maps.Marker({
      position: {lat: 22.734177, lng: 120.284121},
      map: map,
-     position : point,
+    
      icon: image
   });
 }
