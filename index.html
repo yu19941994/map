@@ -9,10 +9,6 @@
     <script type="text/javascript">
         var map;
         function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 22.734437, lng: 120.283739},
-            zoom: 8
-          });
           var myLatlng = new google.maps.LatLng(22.734437,120.283739);
           var mapOptions = {
           zoom: 4,
@@ -20,12 +16,9 @@
           }
           var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-          var image = 'http://i.imgur.com/cw49VDU.png';
           var marker = new google.maps.Marker({
           position: myLatlng,
           title:"Hello World!"
-          map: map,
-          icon: image
           });
           marker.setMap(map);
         }
