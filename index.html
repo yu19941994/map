@@ -5,7 +5,7 @@
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
     </style>-->
-    <script src="jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
 $(function(){
   $.ajax({ 
@@ -17,7 +17,7 @@ $(function(){
         var str;   
         
           str= '<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>';
-          //$('body').append(str);
+          $('body').append(str);
           //var point = new google.maps.LatLng(parseFloat(thisData[i].緯度Lat), parseFloat(thisData[i].經度Lng));
         
 
