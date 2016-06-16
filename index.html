@@ -17,7 +17,7 @@ $(document).ready(function(){
         var thisData = JSON.parse(data);
         var str[];   
         
-          str[]= ['<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>'];
+          str[]= ['<li>'+thisData[i].經度Lng,thisData[i].緯度Lat+ '</li>'];
           $('body').append(str);
           var point = new google.maps.LatLng(parseFloat(thisData[i].緯度Lat), parseFloat(thisData[i].經度Lng));
         
