@@ -1,60 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <meta charset="UTF-8">
-    <style type="text/css">
-      html, body { height: 100%; margin: 0; padding: 0; }
-      #map { height: 100%; }
+<head runat="server">
+    <title>Geocoding Test</title>
+    <script type='text/javascript' 
+            src='jquery-2.2.3.min.js'></script>   
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap"></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style>
+        body,input { font-size: 9pt; }
+        html { height: 100% }  
+        body { height: 100%; margin: 0px; padding: 0px }  
+        #map_canvas { height: 100% }        
     </style>
-    <script src="jquery-2.2.3.min.js"></script>
-    <script type="text/javascript">
-$(document).ready(function(){
-  $.ajax({ 
-     type:'GET', 
- url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
-    success:function (data){    
-      for (i=0;data.length>i;i++) {
-        var thisData = JSON.parse(data);
-        var str;   
-        
-          str= '<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>';
-          $('body').append(str);
-          var point = new google.maps.LatLng(parseFloat(thisData[i].緯度Lat), parseFloat(thisData[i].經度Lng));
-        
-
-    } 
-    }
-  });  
-  
-});
-
-    
-
-
-    var map;
-    function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center:  new google.maps.LatLng(22.734177,120.284121)
-    });
-  
-           //for ( var i = 0; i < markers.length; i++) {
-               
-                //var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
-                
-     var image = 'camera.png';
-     var markers = new google.maps.Marker({
-     position: {lat: 22.734177, lng: 120.284121},
-     map: map,
-     /*position:point,*/
-     icon: image
-  });
-}
+    <script>
+        $(function () {
+            var markers = [];
+            //呼叫ashx, 透過Google地理編碼將地址轉為經緯座標, 並傳回$.ajax() deferred
+            function geocodeAjax(name, addr) {
+                var ajax =
+                        $.post("Geocode.ashx", { address: addr }, 
+                        function (r) {
+                            if (r.status == "OK") {
+                                var loc = r.results[0].geometry.location;
+                                markers.push({
+                                    title: name + "@" + addr,
+                                    latlng: new google.maps.LatLng(loc.lat, loc.lng)
+                                });
+                            }
+                        }, "json");
+                return ajax;
+            }
+ 
+            $.get("http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=4&FileType=2&Lang=C&FolderType=O", {}, function (list) {
+                var lines = list.replace(/\r/g, "").split('\n');
+                var deferredArray = [];
+                //lines[i]格式如下:
+                //中正中隊-華山分隊,(02)23412668,中正區北平東路1號 
+                for (var i = 0; i < lines.length; i++) { //lines.length; i++) {
+                    var parts = lines[i].split(',');
+                    //以AJAX進行地址轉換，並將$.ajax() deferred物件放入陣列中
+                    deferredArray.push(geocodeAjax(parts[0], parts[2]));
+                }
+                //利用jQuery deferred特性，在所有地址轉換AJAX呼叫完畢後，執行特定動作
+                $.when.apply(null, deferredArray).then(function () {
+                    //設定地圖參數
+                    var mapOptions = {
+                        mapTypeId: google.maps.MapTypeId.ROADMAP //正常2D道路模式
+                    };
+                    //在指定DOM元素中嵌入地圖
+                    var map = new google.maps.Map(
+                        document.getElementById("map_canvas"), mapOptions);
+                    //使用LatLngBounds統計檢視範圍
+                    var bounds = new google.maps.LatLngBounds();
+                    //加入標示點(Marker)
+                    for (var i = 0; i < markers.length; i++) {
+                        var m = markers[i];
+                        //將此座標納入檢視範圍
+                        bounds.extend(m.latlng);
+                        var marker = new google.maps.Marker({
+                            position: m.latlng,
+                            title: m.title,
+                            map: map
+                        });
+                    }
+                    //調整檢視範圍
+                    map.fitBounds(bounds);
+                });
+            });
+        });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
-    </script>
-  </head>
-  <body>
-    <div id="map"></div>
-  </body>
+</head>
+<body>
+<div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
 </html>
