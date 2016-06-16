@@ -1,60 +1,67 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  <meta charset="UTF-8">
-    <style type="text/css">
-      html, body { height: 100%; margin: 0; padding: 0; }
-      #map { height: 100%; }
-    </style>
-    <script src="jquery-2.2.3.min.js"></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+    <!--要玩Google Map 就一定要引用此js-->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap"></script>
     <script type="text/javascript">
-$(document).ready(function(){
-  $.ajax({ 
-     type:'GET', 
- url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
-    success:function (data){    
-      for (i=0;data.length>i;i++) {
-        var thisData = JSON.parse(data);
-        var str[];   
-        
-          str[]= ['<li>'+thisData[i].經度Lng,thisData[i].緯度Lat+ '</li>'];
-          $('body').append(str);
-          var point = new google.maps.LatLng(parseFloat(thisData[i].緯度Lat), parseFloat(thisData[i].經度Lng));
-        
+        $(document).ready(init);
 
-    } 
-    }
-  });  
-  
-});
-
-    
+        //網頁上所有的DOM都載入後
+        function init() {
+            addMarker();
+        }
+        //加入標記點
+        function addMarker() {
+            $.ajax(
+            {
+                url: 'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O',
+                type: 'post',
+                async: false,
+                data: {},
+                dataType: 'json',
+                success: function (data) {
 
 
-    var map;
-    function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center:  new google.maps.LatLng(22.734177,120.284121)
-    });
-  
-           //for ( var i = 0; i < markers.length; i++) {
-               
-                //var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
-                
-     var image = 'camera.png';
-     var markers = new google.maps.Marker({
-     position: {lat: 22.734177, lng: 120.284121},
-     map: map,
-     /*position:point,*/
-     icon: image
-  });
-}
+                    var first = true;
+                    var map;
+                    for (var index in data) {
+
+                        if (first == true) {//第一次執行迴圈
+                            /*以哪個緯經度中心來產生地圖*/
+                            var latlng = new google.maps.LatLng(data[index].緯度Lat, data[index].經度Lng);
+                            var myOptions = {
+                                zoom: 14,
+                                center: latlng,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            };
+                            /*產生地圖*/
+                            map = new google.maps.Map($("#div_showMap")[0], myOptions);
+
+                            first = false;
+                        } //End if (first == true) 
+
+
+                        //建立緯經度座標
+                        var myLatlng = new google.maps.LatLng(data[index].緯度Lat, data[index].經度Lng);
+                        //加一個Marker到map中
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: map,
+                            title: data[index].名稱
+                        });
+                    } //End for (var index in data) 
+                }     //End success: function (data) 
+            });       //End jQuery Ajax
+        }             //End function addMarker() 
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
-    </script>
-  </head>
-  <body>
-    <div id="map"></div>
-  </body>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="div_showMap" style="width: 800px; height: 600px">
+    </div>
+    </form>
+</body>
 </html>
