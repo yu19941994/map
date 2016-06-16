@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style type="text/css">
+    <!--<style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
-    </style>
+    </style>-->
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
-    //$(document).ready(function() {
-    //$.ajax({
-    //type:'GET', 
-    //dataType:'jsonp',
-    //url : "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O",   // JSON 資料路徑
-    //success : function(data) {
-    //var markers = data.result;
+$(function(){
+  $.ajax({ 
+     type:'GET', 
+ url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
+    success:function (data){    
+      for (i=0;data.length>i;i++) {
+        var thisData = JSON.parse(data);
+        var str;   
+        
+          str= '<li>'+thisData[i].經度Lng +thisData[i].緯度Lat+ '</li>';
+          //$('body').append(str);
+          var point = new google.maps.LatLng(parseFloat(thisData[i].緯度Lat), parseFloat(thisData[i].經度Lng));
+        
+
+    } 
+    }
+  });  
+  
+});
+
+    
+
 
     var map;
     function initMap() {
@@ -24,7 +39,7 @@
   
            //for ( var i = 0; i < markers.length; i++) {
                
-                //var point = new google.maps.LatLng(parseFloat(markers[i].經度Lng), parseFloat(markers[i].緯度Lat)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                //var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
                 
      var image = 'camera.png';
      var markers = new google.maps.Marker({
