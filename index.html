@@ -5,50 +5,44 @@
    <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
-    </style>-->
+    </style>
     <script src="jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
-$(document).ready(function(){
-  $.ajax({ 
-     type:'GET', 
- url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
-    success:function (data){  
-    console.log("hi");
-      for (i=0;data.length>i;i++) {
-        var thisData = JSON.parse(data);
-        var str;   
-        
-          str = '<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>';
-          $('body').append(str);
-          
-        
+// Initialize the map.
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 8,
+    center: {lat: 40.72, lng: -73.96}
+  });
+  var geocoder = new google.maps.Geocoder;
+  var infowindow = new google.maps.InfoWindow;
 
-    } 
+  document.getElementById('submit').addEventListener('click', function() {
+    geocodePlaceId(geocoder, map, infowindow);
+  });
+}
+
+// This function is called when the user clicks the UI button requesting
+// a reverse geocode.
+function geocodePlaceId(geocoder, map, infowindow) {
+  var placeId = document.getElementById('place-id').value;
+  geocoder.geocode({'placeId': placeId}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        map.setZoom(11);
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+        infowindow.setContent(results[0].formatted_address);
+        infowindow.open(map, marker);
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
     }
-  });  
-  
-});
-
-    
-
-
-    var map;
-    function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center:  new google.maps.LatLng(22.734177,120.284121)
-    });
-  
-           //for ( var i = 0; i < markers.length; i++) {
-               
-                //var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
-                
-     var image = 'camera.png';
-     var markers = new google.maps.Marker({
-     position: {lat: 22.734177, lng: 120.284121},
-     map: map,
-     /*position:point,*/
-     icon: image
   });
 }
     </script>
@@ -57,5 +51,7 @@ $(document).ready(function(){
   </head>
   <body>
     <div id="map"></div>
+    <div id="lat"></div>
+    <div id="lng"></div>
   </body>
 </html>
