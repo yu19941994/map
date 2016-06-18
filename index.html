@@ -27,7 +27,7 @@ $(document).ready(function(){
        
 
     geocoder.geocode({
-        'str': addr
+        'address': addr
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
 
