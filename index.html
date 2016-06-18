@@ -6,12 +6,12 @@
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
     </style>-->
-    <script src="jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
 $(document).ready(function(){
   $.ajax({ 
      type:'GET', 
- url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=11&FileType=2&Lang=C&FolderType=O', 
+ url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=4&FileType=2&Lang=C&FolderType=O', 
     success:function (data){  
     console.log("hi");
       for (i=0;data.length>i;i++) {
@@ -20,6 +20,25 @@ $(document).ready(function(){
         
           str = '<li>'+thisData[i].發生地點+ '</li>';
           $('body').append(str);
+
+    var geocoder = new google.maps.Geocoder();
+ 
+    var addr = $("str").text();
+       
+
+    geocoder.geocode({
+        'str': addr
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+
+            $('#lat').text(results[0].geometry.location.lat());
+            $('#lng').text(results[0].geometry.location.lng());
+            
+
+    }
+        
+});
+
           
         
 
@@ -28,9 +47,36 @@ $(document).ready(function(){
   });  
   
 });
-</script>
-</head>
+
+    
+
+
+    /*var map;
+    function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 7,
+    center:  new google.maps.LatLng(22.734177,120.284121)
+    });
+  
+           //for ( var i = 0; i < markers.length; i++) {
+               
+                //var point = new google.maps.LatLng(parseFloat(markers[i].緯度Lat), parseFloat(markers[i].經度Lng)); // 將 JSON 裡讀出來的地標逐一加到地圖上
+                
+     var image = 'camera.png';
+     var markers = new google.maps.Marker({
+     position: {lat: 22.734177, lng: 120.284121},
+     map: map,
+     /*position:point,*/
+     //icon: image
+  //});
+//}*/
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
+    </script>-->
+  </head>
   <body>
     <div id="map"></div>
+    <div id="lat"></div>
+    <div id="lng"></div>
   </body>
 </html>
