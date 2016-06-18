@@ -6,39 +6,20 @@
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
     </style>-->
-    <script src="jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-2.2.3.min.js"></script>
     <script type="text/javascript">
 $(document).ready(function(){
   $.ajax({ 
      type:'GET', 
- url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=4&FileType=2&Lang=C&FolderType=O', 
+ url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
     success:function (data){  
     console.log("hi");
       for (i=0;data.length>i;i++) {
         var thisData = JSON.parse(data);
         var str;   
         
-          str = '<li>'+thisData[i].發生地點+ '</li>';
+          str = '<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>';
           $('body').append(str);
-
-    var geocoder = new google.maps.Geocoder();
- 
-    var addr = $("str").text();
-       
-
-    geocoder.geocode({
-        'address': addr
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-
-            $('#lat').text(results[0].geometry.location.lat());
-            $('#lng').text(results[0].geometry.location.lng());
-            
-
-    }
-        
-});
-
           
         
 
@@ -67,16 +48,14 @@ $(document).ready(function(){
      position: {lat: 22.734177, lng: 120.284121},
      map: map,
      /*position:point,*/
-     icon: image
+     //icon: image
   });
 }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
-    </script>
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=initMap" async defer>
+    </script>-->
   </head>
   <body>
     <div id="map"></div>
-    <div id="lat"></div>
-    <div id="lng"></div>
   </body>
 </html>
