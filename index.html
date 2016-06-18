@@ -52,6 +52,31 @@
     </div>
     <div id="map"></div>
     <script>
+$(document).ready(function(){
+  $.ajax({ 
+     type:'GET', 
+ url:'http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AF&CaseNo2=1&FileType=2&Lang=C&FolderType=O', 
+    success:function (data){  
+    console.log("hi");
+      for (i=0;data.length>i;i++) {
+        var thisData = JSON.parse(data);
+        var str;   
+        
+          str = '<li>'+thisData[i].經度Lng+thisData[i].緯度Lat+ '</li>';
+          $('body').append(str);
+          
+        
+
+    } 
+    }
+  });  
+  
+});
+
+
+
+
+    
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 8,
