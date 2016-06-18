@@ -47,7 +47,7 @@
   </head>
   <body>
     <div id="floating-panel">
-      <input id="latlng" type="text" value="40.714224,-73.961452">
+      <input id="latlng" type="text" value="22.734177,120.284121">
       <input id="submit" type="button" value="Reverse Geocode">
     </div>
     <div id="map"></div>
@@ -55,7 +55,7 @@
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 8,
-    center: {lat: 40.731, lng: -73.997}
+    center: {lat: 22.734177, lng: 120.284121}
   });
   var geocoder = new google.maps.Geocoder;
   var infowindow = new google.maps.InfoWindow;
