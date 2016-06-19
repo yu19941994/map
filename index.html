@@ -4,8 +4,7 @@
     <title></title>
     <style type="text/css">
      .activity-info {
-    float: left;
-    width: calc(100% - 94px);
+   
      }
 
     </style>
@@ -63,7 +62,7 @@
                             //title: data[index].測照地點
                         });
                        
-                        var content= data[index].單位 ;
+                        var content='<div class="activity-info"><h2>' + data[index].單位 + '</h2></div>';
                         attachSecretMessage(marker,content) ;
                        
                         function attachSecretMessage(marker, content) {
