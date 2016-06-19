@@ -62,7 +62,7 @@
                             //title: data[index].測照地點
                         });
                        
-                        var content='<div class="activity-info"><h2>' + data[index].單位 + '</h2></div>';
+                        var content='<div class="activity-info"><p>' + data[index].單位 +'</br>'+data[index].地址 +'</p></div>';
                         attachSecretMessage(marker,content) ;
                        
                         function attachSecretMessage(marker, content) {
