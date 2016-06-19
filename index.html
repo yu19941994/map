@@ -29,15 +29,13 @@
                 data: {},
                 dataType: 'json',
                 success: function (data) {
-
-
                     var first = true;
                     var map;
                     var infowindow = new google.maps.InfoWindow();
                     var image = 'camera.png';
                     var geocoder = new google.maps.Geocoder();
                     //var focusInfoWindow;
-                    for (var index in data) {
+                    for (var index=0; index<data.length; index++) {
 
                         if (first == true) {//第一次執行迴圈
                             /*以哪個緯經度中心來產生地圖*/
@@ -60,13 +58,14 @@
                         geocoder.geocode({'location': myLatlng}, function(results, status) {
                             if (status === google.maps.GeocoderStatus.OK) {
                                  if (results[1]) {
+                                    console.log(myLatlng);
                                     map.setZoom(11);
                                     var marker = new google.maps.Marker({
                                         position: myLatlng,
-                                        map: map,
                                         icon: image,
                                         title: data[index].測照地點
                                     });
+                                    marker.setMap(map);
                                     infowindow.setContent(results[1].formatted_address);
                                     infowindow.open(map, marker);
                                 } else {
