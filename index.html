@@ -53,18 +53,18 @@
 
 
                         //建立緯經度座標
-                        var myLatlng = new google.maps.LatLng(data[index].緯度Lat, data[index].經度Lng);
+                        var myLatlng = "{lat:"+data[index].緯度Lat+", lng:"+data[index].經度Lng+"}";
                         //加一個Marker到map中 
                         geocoder.geocode({'location': myLatlng}, function(results, status) {
                             if (status === google.maps.GeocoderStatus.OK) {
                                  if (results[1]) {
                                     console.log(myLatlng);
-                                    map.setZoom(11);
                                     var marker = new google.maps.Marker({
                                         position: myLatlng,
                                         icon: image
                                     });
                                     marker.setMap(map);
+                                    map.setZoom(11);
                                     infowindow.setContent(results[1].formatted_address);
                                     infowindow.open(map, marker);
                                 } else {
