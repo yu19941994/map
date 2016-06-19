@@ -70,9 +70,20 @@
                         var infowindow = new google.maps.InfoWindow({
                         content: content,
                         });
+
                         google.maps.event.addListener(marker, 'click', function() {
+                        if(!marker.open){
                         infowindow.open(marker.get('map'), marker);
-                           });
+                        marker.open = true;
+                        }
+                        else{
+                        infowindow.close();
+                        marker.open = false;
+                        }
+                        });
+                        /*google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(marker.get('map'), marker);
+                           });*/
                         }
                         
                        marker.addListener('click', function() {
@@ -80,7 +91,6 @@
                          focusInfoWindow.close();
                          }
                         infoWindow.open(map, marker);
-                        infowindow.close();
                         focusInfoWindow = infoWindow;
                         var listCount = Number(dataCount) + 1;
         /**
