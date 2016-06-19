@@ -62,13 +62,17 @@
                             icon: image,
                             title: data[index].測照地點
                         });
+                        var content: '<div class="activity-info"><h2>' + myLatlng + '</h2></div>';
+                        attachSecretMessage(marker,content) ;
+                        }
+                        function attachSecretMessage(marker, content) {
                         var infoWindow = new google.maps.InfoWindow({
-                        content: '<div class="activity-info"><h2>' + myLatlng + '</h2></div>'
+                            content: content ,
                         });
                         google.maps.event.addListener(marker, 'click', function() {
                         infowindow.open(marker.get('map'), marker);
                            });
-
+                        }
                         
                        /*  marker.addListener('click', function() {
                          if (focusInfoWindow != null) {
