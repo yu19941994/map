@@ -55,7 +55,7 @@
                         //建立緯經度座標
                         var myLatlng = new google.maps.LatLng(data[index].緯度Lat, data[index].經度Lng);
                         //加一個Marker到map中
-                        var image = 'camera.png';
+                        var image = 'police.png';
                         var marker = new google.maps.Marker({
                             position: myLatlng,
                             map: map,
@@ -63,7 +63,7 @@
                             //title: data[index].測照地點
                         });
                        
-                        var content='<div class="activity-info"><h2>' + data[index].單位 + '</h2></div>';
+                        var content= data[index].單位 ;
                         attachSecretMessage(marker,content) ;
                        
                         function attachSecretMessage(marker, content) {
