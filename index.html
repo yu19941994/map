@@ -33,6 +33,8 @@
 
                     var first = true;
                     var map;
+                    var infoWindows = [];
+                    var focusInfoWindow;
                     for (var index in data) {
 
                         if (first == true) {//第一次執行迴圈
@@ -60,28 +62,28 @@
                             icon: image,
                             title: data[index].測照地點
                         });
-                          var infoWindow = new google.maps.InfoWindow({
-                          content: '<div class="activity-info"><h2>' + myLatlng + '</h2></div>'
-    });
+                        var infoWindow = new google.maps.InfoWindow({
+                        content: '<div class="activity-info"><h2>' + myLatlng + '</h2></div>'
+                        });
 
-    marker.addListener('click', function() {
-        if (focusInfoWindow != null) {
-            focusInfoWindow.close();
-        }
-        infoWindow.open(map, marker);
-        focusInfoWindow = infoWindow;
-        var listCount = Number(dataCount) + 1;
+                         marker.addListener('click', function() {
+                         if (focusInfoWindow != null) {
+                         focusInfoWindow.close();
+                         }
+                        infoWindow.open(map, marker);
+                        focusInfoWindow = infoWindow;
+                        var listCount = Number(dataCount) + 1;
         /**
         $('html,body').animate({
             scrollTop: $('#list > li:nth-child(' + listCount + ')').offset().top
         }, 2000);
         **/
 
-    });
+                         });
 
-    oms.addMarker(marker);
-    markers.push(marker);
-    infoWindows.push(infoWindow);
+                         addMarker(marker);
+                         markers.push(marker);
+                         infoWindows.push(infoWindow);
 
 
                     } //End for (var index in data) 
