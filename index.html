@@ -44,12 +44,20 @@
                         } //End if (first == true) 
                         var marker = new google.maps.Marker({
                             position: latlng,
-                            icon: image
+                            icon: image,
+                            map: map
                         });
-                        marker.setMap(map);
-                        infowindow.setContent(data[index].行政區);
-                        infowindow.open(map, marker);
 
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: data[index].資料序號Seq
+                        });
+
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
+
+                        marker.setMap(map);
+                        
                         /*var content='<div class="activity-info"><h2>' + myLatlng + '</h2></div>';
                         attachSecretMessage(marker,content) ;
                        
