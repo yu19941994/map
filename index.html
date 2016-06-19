@@ -53,7 +53,7 @@
 
 
                         //建立緯經度座標
-                        var myLatlng = "{lat:"+data[index].緯度Lat+", lng:"+data[index].經度Lng+"}";
+                        var myLatlng = new google.maps.LatLng(data[index].緯度Lat, data[index].經度Lng);
                         //加一個Marker到map中 
                         geocoder.geocode({'location': myLatlng}, function(results, status) {
                             if (status === google.maps.GeocoderStatus.OK) {
