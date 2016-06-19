@@ -11,7 +11,7 @@
     </style>
     <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
     <!--要玩Google Map 就一定要引用此js-->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y&callback=addMarker"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACJR7nXtsT9Agnxw625Ab2upZlyyPgO3Y"></script>
     <script type="text/javascript">
     //加入標記點
     function addMarker() {
@@ -47,8 +47,7 @@
                             icon: image
                         });
                         marker.setMap(map);
-                        map.setZoom(11);
-                        infowindow.setContent(results[1].formatted_address);
+                        infowindow.setContent(data[index].行政區);
                         infowindow.open(map, marker);
 
                         /*var content='<div class="activity-info"><h2>' + myLatlng + '</h2></div>';
